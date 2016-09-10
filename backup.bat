@@ -40,8 +40,11 @@ MAIN :  {
 	#my @info = ( "$USERPROFILE\\Documents", "G:\\backups\\scotty"  );  # SOURCEDIR, TARGETDIR ...
 	
 	my $drive = "G"; # MYBOOK3T < backup drive
+	my $hdrive = "H"; # My Passport Ultra drive
 
 	my $G_drive_root = "$drive:\\backups\\scotty\\_C_\\Users\\Kirk";
+	my $H_drive_root = "$hdrive:\\backups\\scotty\\_C_\\Users\\Kirk";
+
 	
 	my @info = ( 
 				 "$USERPROFILE\\AppData\\Local\\Microsoft\\Windows Live Mail", "$drive:\\backups\\photos-hp" ,"relative",
@@ -57,6 +60,9 @@ MAIN :  {
 				 "E:\\JamesLaderoute\\HP_Install_Kits",      "$G_drive_root\\HP_Install_Kits" ,  "substitute",
 				 "E:\\JamesLaderoute\\Applications3rdParty", "$G_drive_root\\Applications3rdParty" ,  "substitute",
 				 "E:\\JamesLaderoute\\Videos", "$G_drive_root\\Videos" ,  "substitute",
+
+				 "E:\\JamesLaderoute\\Pictures",   "$H_drive_root\\Pictures" ,   "substitute",
+				 "E:\\JamesLaderoute\\MySoftware", "$H_drive_root\\MySoftware" , "substitute",
 				 );
 				 
 	
@@ -89,8 +95,8 @@ MAIN :  {
 			my $e = $@;
 			push(@LOGDATA, "Something went wrong when doBackup was called with $srcDir $destRootDir: $e");
 			print DEBUGFILE "Caught exception \"$e\"\n" if ( $DEBUG );
-			print("Eval of doBackup has failed \"$e\" ... sleeping for 2 seconds\n");
-			sleep(2);
+			print("Eval of doBackup has failed \"$e\" ... sleeping for 4 seconds\n");
+			sleep(4);
 		}
 		
 		
@@ -163,14 +169,14 @@ print  "doBackup $topSourceDir  $sourceDir  $destinationRootDir $processStyle\n"
 	# copied, we will reduce repeated lookups by remembering which directories
 	# we have already visited. And prevent going down that path again.
 	#
-	if ( exists( $ALREADY_COPIED{"$sourceDir"} ) )
+	if ( exists( $ALREADY_COPIED{"$sourceDir $destinationRootDir"} ) )
 	{
 		print "REDUNDENT COPY OF $sourceDir\n";
 		push(@LOGDATA, "REDUNDENT COPY OF $sourceDir");
 		return;
 	}
 	
-	$ALREADY_COPIED{"$sourceDir"} = 1;
+	$ALREADY_COPIED{"$sourceDir $destinationRootDir"} = 1;
 	
 	#
 	# create a list of system files that we don't need to copy
@@ -213,8 +219,8 @@ print  "doBackup $topSourceDir  $sourceDir  $destinationRootDir $processStyle\n"
 			{
 				print DEBUGFILE "Caught exception 2: \"$@\" doing $sourceFile  \n" if ( $DEBUG );
 				print "Caught exception 2: \"$@\" \n";
-				print "Sleep for 1 second\n";
-				sleep(1);
+				print "Sleep for 3 second\n";
+				sleep(3);
 			}
 			next;
 		}
