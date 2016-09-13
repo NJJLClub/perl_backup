@@ -164,6 +164,14 @@ print  "doBackup $topSourceDir  $sourceDir  $destinationRootDir $processStyle\n"
 		return;
 	}
 	
+	if ( ! -e $destinationRootDir )
+	{
+		print("-E- Failed to find destination root dir $destinationRootDir \n");
+		print DEBUGFILE "doBackup unable to find destination $destinationRootDir \n" if ( $DEBUG );
+		push( @LOGDATA, "MISSING DESTINATION ROOTDIR $destinationRootDir");
+		return;
+	}
+	
 	#
 	# In case user chooses a folder that includes another folder already
 	# copied, we will reduce repeated lookups by remembering which directories
