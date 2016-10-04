@@ -117,8 +117,10 @@ sub saveLog
 	
 	my $num = 1;
 	my $logfile = "$sourceDir/backup.log";
-	while ( -e "${logfile}.${num}.txt" ) { $num++ }
-	$logfile =  $logfile . ".${num}.txt";
+	if ( -e $logfile )
+	{
+		copy( $logfile, $logfile.".bak" );
+	}
 		
 	if ( ! open(*LOGFILE, ">$logfile" ) )
 	{
